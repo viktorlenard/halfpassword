@@ -4,40 +4,92 @@ from django.http import JsonResponse
 # from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 
-# Create your views here.
-
 # @api_view(['GET'])
 def getRoutes(request):
     routes = [
         {
-            'Endpoint': '/notes/',
+            'Endpoint': '/passwords/',
             'method': 'GET',
             'body': None,
-            'description': 'Returns an array of notes'
+            'description': 'Returns an array of passwords'
         },
         {
-            'Endpoint': '/notes/id',
+            'Endpoint': '/passwords/id',
             'method': 'GET',
             'body': None,
-            'description': 'Returns a single note object'
+            'description': 'Returns a single password object'
         },
         {
-            'Endpoint': '/notes/create/',
+            'Endpoint': '/passwords/create/',
             'method': 'POST',
-            'body': {'body': ""},
-            'description': 'Creates new note with data sent in post request'
+            'body': {
+                'name': "",
+                'username': "",
+                'ciphertext': "",
+                'url': "",
+                'tags': "",
+                'comment': "",
+            },
+            'description': 'Creates new password with data sent in post request'
         },
         {
-            'Endpoint': '/notes/id/update/',
+            'Endpoint': '/passwords/id/update/',
             'method': 'PUT',
-            'body': {'body': ""},
-            'description': 'Creates an existing note with data sent in post request'
+            'body': {
+                'name': "",
+                'username': "",
+                'ciphertext': "",
+                'url': "",
+                'tags': "",
+                'comment': "",
+            },
+            'description': 'Creates an existing password with data sent in post request'
         },
         {
-            'Endpoint': '/notes/id/delete/',
+            'Endpoint': '/passwords/id/delete/',
             'method': 'DELETE',
             'body': None,
-            'description': 'Deletes and exiting note'
+            'description': 'Deletes and exiting password'
         },
+        # This might change , not sure how to implement it yet
+        {
+            'Endpoint': '/passwords/generate/',
+            'method': 'POST',
+            'body': {
+                'readable': '',
+                'length': '',
+                'div': '',
+                'caps': '',
+                'nums': '',
+            },
+            'description': 'Generates a new password with data sent in post request'
+        },
+        {
+            'Endpoint': '/register/',
+            'method': 'POST',
+            'body': {
+                'username': "",
+                'email': "",
+                'password': "",
+                'confirm_password': ""
+            },
+            'description': 'Registers a new user',
+        },
+        {
+            'Endpoint': '/login/',
+            'method': 'POST',
+            'body': {
+                'username': "",
+                'email': "",
+                'password': "",
+            },
+            'description': 'Authenticates a user and returns an auth token',
+        },
+        {
+            'Endpoint': '/logout/',
+            'method': 'POST',
+            'body': None,
+            'description': 'Logs out a user and deletes their auth token',
+        }
     ]
     return JsonResponse(routes, safe=False) 
