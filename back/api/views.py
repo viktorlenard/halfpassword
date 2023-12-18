@@ -1,10 +1,10 @@
-from django.http import JsonResponse
-# from django.shortcuts import render
-# from django.shortcuts import render
-# from rest_framework.response import Response
-# from rest_framework.decorators import api_view
+from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .models import Password
+from .serializers import PasswordSerializer 
 
-# @api_view(['GET'])
+@api_view(['GET'])
 def getRoutes(request):
     routes = [
         {
@@ -92,4 +92,16 @@ def getRoutes(request):
             'description': 'Logs out a user and deletes their auth token',
         }
     ]
-    return JsonResponse(routes, safe=False) 
+    return Response(routes) 
+
+@api_view(['GET'])
+def getPasswords(request):
+    passwords = Password.objects.all() # This is a query set of all the passwords. Can't be passed directly to the response. Need to serialize it first
+    serializer = PasswordSerializer(passwords, many=True) # Serializes the query set into a json object. Many=True because there are many objects in the query set
+    return Response(serializer.data) # Returns the serialized data. serilazer is a json object. serializer.data is the data inside the json object
+
+@api_view(['GET'])
+def getPassword(request, pk): # pk is the primary key of the password object
+    password = Password.objects.get(id=pk) # Gets a single password object from the database
+    serializer = PasswordSerializer(password, many=False) # many=False because there is only one object
+    return Response(serializer.data)
