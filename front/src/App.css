@@ -7,3 +7,12 @@ h1 {
     color: #000000;
     margin: 0;
 }
+
+.home-link {
+    text-decoration: none;
+    color: black;
+  }
+  
+  .home-link:hover {
+    color: rgb(107, 107, 107);
+  }
