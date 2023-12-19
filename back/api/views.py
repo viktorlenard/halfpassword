@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Password
-from .serializers import PasswordSerializer 
+from .serializers import PasswordSerializer, EntrySerializer 
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -97,7 +97,7 @@ def getRoutes(request):
 @api_view(['GET'])
 def getPasswords(request):
     passwords = Password.objects.all() # This is a query set of all the passwords. Can't be passed directly to the response. Need to serialize it first
-    serializer = PasswordSerializer(passwords, many=True) # Serializes the query set into a json object. Many=True because there are many objects in the query set
+    serializer = EntrySerializer(passwords, many=True) # Serializes the query set into a json object. Many=True because there are many objects in the query set
     return Response(serializer.data) # Returns the serialized data. serilazer is a json object. serializer.data is the data inside the json object
 
 @api_view(['GET'])
