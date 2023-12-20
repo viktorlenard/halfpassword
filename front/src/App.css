@@ -9,6 +9,9 @@ h1 {
 }
 
 .home-link {
+    font-family: 'PPMondwest-Bold';
+    font-weight: bold;
+    font-style: normal;  
     text-decoration: none;
     color: black;
   }

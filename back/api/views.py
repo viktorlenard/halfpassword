@@ -2,7 +2,11 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Password
-from .serializers import PasswordSerializer, EntrySerializer 
+from .serializers import PasswordSerializer, EntrySerializer
+from .utils import request_validator, password_generator 
+
+import logging # DEBUGGING
+logger = logging.getLogger(__name__) # DEBUGGING
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -53,7 +57,7 @@ def getRoutes(request):
         },
         # This might change , not sure how to implement it yet
         {
-            'Endpoint': '/passwords/generate/',
+            'Endpoint': '/generate/',
             'method': 'POST',
             'body': {
                 'readable': '',
@@ -105,3 +109,20 @@ def getPassword(request, pk): # pk is the primary key of the password object
     password = Password.objects.get(id=pk) # Gets a single password object from the database
     serializer = PasswordSerializer(password, many=False) # many=False because there is only one object
     return Response(serializer.data)
+
+@api_view(['POST'])
+def generatePassword(request):
+    data = request.data # Gets the data from the request
+    password_request = {
+        'human': data.get('human'),
+        'length': int(data.get('length')),
+        'div': data.get('div'),
+        'caps': data.get('caps'),
+        'nums': data.get('nums'),
+        'valid': None
+    } # Sanitizes the data, puts it into a dict.
+    request_validator(password_request) # Validates the request
+    if password_request['valid'] != True:
+        return Response('Invalid request') # Returns an error if the request is invalid
+    password = password_generator(password_request)  # Generates the password
+    return Response(password)
