@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const Generator = () => {
   
     const [lenght, setLenght] = useState(3);
-    const [data, setData] = useState(null); // Add this line
+    const [data, setData] = useState(null);
 
     const handleLenghtChange = (event) => { 
         setLenght(event.target.value);
@@ -32,7 +32,7 @@ const Generator = () => {
         if (response.ok) {
             const data = await response.json();
             console.log(data);
-            setData(data); // Add this line
+            setData(data);
         } else {
             console.error('Error:', response.status, response.statusText);
         }
@@ -46,16 +46,16 @@ const Generator = () => {
         </label>
         <label>
             Readable
-            <input label='Readable' type="checkbox" name="human" />
+            <input defaultChecked={true} label='Readable' type="checkbox" name="human" />
         </label>
         <label>
             Length
-            <input type="range" min='3'max='8' step='1' name="length" onChange={handleLenghtChange}/>
+            <input type="range" min='3'max='8' step='1' name="length" defaultValue='3' onChange={handleLenghtChange}/>
             {lenght}
         </label>
         <select multiple={false} name="div" >
-            <option value={'_'}>_</option>
             <option value={'-'}>-</option>
+            <option value={'_'}>_</option>
             <option value={'.'}>.</option>
         </select>
         <label>
@@ -64,7 +64,7 @@ const Generator = () => {
         </label>
         <label>
             Nums
-            <input type="checkbox" name="nums" />
+            <input defaultChecked={true} type="checkbox" name="nums" />
         </label>
         <input type="submit" value="Submit" />
     </form>

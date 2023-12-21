@@ -16,6 +16,10 @@ h1 {
     color: black;
   }
   
-  .home-link:hover {
+.home-link:hover {
     color: rgb(107, 107, 107);
-  }
+}
+
+.switchy-button {
+  min-width: 200px;
+}
