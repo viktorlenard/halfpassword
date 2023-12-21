@@ -8,6 +8,7 @@ const PasswordPage = () => {
     let getPassword = async () => {
         let response = await fetch(`/api/passwords/${id}`);
         let data = await response.json();
+        console.log(data);
         setPassword(data);
     }
 
@@ -22,12 +23,38 @@ const PasswordPage = () => {
             <div className='entry-card'>
                 {password ? (
                     <>
-                        <p>{password.name}</p>
-                        <p>{password.username}</p>
-                        <p>{password.ciphertext}</p>
-                        <p>{password.url}</p>
-                        <p>{password.tags}</p>
-                        <p>{password.comment}</p>
+                    <div className='password-card'>
+                        <label>
+                            Name
+                            <textarea defaultValue={password.name}></textarea>
+                        </label>
+                        <label>
+                            Username
+                            <textarea defaultValue={password.username}></textarea>
+                        </label>
+                        <label>
+                            Password
+                            <textarea defaultValue={password.ciphertext}></textarea>
+                        </label>
+                        <label>
+                            URL
+                            <textarea defaultValue={password.url}></textarea>
+                        </label>
+                        <label>
+                            Tag
+                            <select defaultValue={password.tags} multiple={false} name="tags" >
+                                <option value={'blue'}>Blue</option>
+                                <option value={'red'}>Red</option>
+                                <option value={'green'}>Green</option>
+                                <option value={'yellow'}>Yellow</option>
+                                <option value={'purple'}>Purple</option>
+                            </select>
+                        </label>
+                        <label>
+                            Comment
+                            <textarea defaultValue={password.comment}></textarea>
+                        </label>
+                    </div>
                     </>
                 ) : (
                     <p>NOT FOUND</p>
