@@ -1,6 +1,7 @@
 import React from 'react';
+import Generator from './generator';
 
-const EditPassword = ({ password, getPassword }) => {
+const EditPassword = ({ password, getPassword, setIsEditing }) => {
     
     return (
         <div>
@@ -9,8 +10,8 @@ const EditPassword = ({ password, getPassword }) => {
                 {password ? (
                     <>
                     <div>
-                        <button>Save</button>
-                        <button>Discard</button>
+                        <button onClick={() => setIsEditing(false)}>Save</button>
+                        <button onClick={() => setIsEditing(false)}>Discard</button>
                     </div>
                     <div className='password-card'>
                         <label>
@@ -49,6 +50,7 @@ const EditPassword = ({ password, getPassword }) => {
                     <p>NOT FOUND</p>
                 )}
             </div>
+            <Generator/>
         </div>
     )
 };

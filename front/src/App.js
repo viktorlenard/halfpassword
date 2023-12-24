@@ -3,7 +3,6 @@ import './App.css';
 import Header from './components/header'; 
 import PasswordsPage from './pages/PasswordsPage';
 import PasswordPage from './pages/PasswordPage';
-import Generator from './components/generator';
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
         <Routes>
           <Route path='/passwords/:id' element={<PasswordPage />} />
         </Routes>
-        <Generator />
       </div>
     </Router>
   ); 

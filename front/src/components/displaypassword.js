@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const DisplayPassword = ({ password, getPassword }) => {
+const DisplayPassword = ({ password, getPassword, setIsEditing }) => {
     
     const [isHovered, setIsHovered] = useState(false);
 
@@ -11,7 +11,7 @@ const DisplayPassword = ({ password, getPassword }) => {
                 {password ? (
                     <>
                     <div>
-                        <button>Edit</button>
+                        <button onClick={() => setIsEditing(true)}>Edit</button>
                         <button>Delete</button>
                     </div>
                     <div className='password-card'>

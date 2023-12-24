@@ -7,6 +7,7 @@ const PasswordPage = () => {
     
     let { id } = useParams();
     let [password, setPassword] = useState(null);
+    let [isEditing, setIsEditing] = useState(false);
     let getPassword = async () => {
         let response = await fetch(`/api/passwords/${id}`);
         let data = await response.json();
@@ -20,8 +21,11 @@ const PasswordPage = () => {
 
     return (
         <div>
-            <DisplayPassword password={password} getPassword={getPassword} />
-            <EditPassword password={password} getPassword={getPassword} />
+            {isEditing ? 
+                <EditPassword password={password} getPassword={getPassword} setIsEditing={setIsEditing} /> 
+                : 
+                <DisplayPassword password={password} getPassword={getPassword} setIsEditing={setIsEditing} />
+            }
         </div>
     )
 };
