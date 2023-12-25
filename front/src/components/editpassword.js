@@ -3,11 +3,43 @@ import Generator from './generator';
 
 const EditPassword = ({ password, getPassword, setIsEditing }) => {
     
+    const [name, setName] = useState(password.name);
+    const [username, setUsername] = useState(password.username);
     const [passwordValue, setPasswordValue] = useState(password.ciphertext);
+    const [url, setUrl] = useState(password.url);
+    const [tags, setTags] = useState(password.tags);
+    const [comment, setComment] = useState(password.comment);
     
     const handleGenerate = (generatedPassword) => {
         if (generatedPassword !== undefined) {
             setPasswordValue(generatedPassword);
+        }
+    };
+
+    const handleSave = async () => {
+        if (password) {
+            const response = await fetch(`/api/passwords/${password.id}/update/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user: password.user,
+                    name: name,
+                    username: username,
+                    ciphertext: passwordValue,
+                    url: url,
+                    tags: tags,
+                    comment: comment
+                })
+            });
+    
+            if (response.ok) {
+                setIsEditing(false);
+                getPassword(); // Re-fetch the password data, so that the display is updated
+            } else {
+                console.error('Update failed');
+            }
         }
     };
 
@@ -18,17 +50,17 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
                 {password ? (
                     <>
                     <div>
-                        <button onClick={() => setIsEditing(false)}>Save</button>
+                        <button onClick={() => {handleSave(); setIsEditing(false);}}>Save</button>
                         <button onClick={() => setIsEditing(false)}>Discard</button>
                     </div>
                     <div className='password-card'>
                         <label>
                             Name
-                            <textarea defaultValue={password.name}></textarea>
+                            <textarea value={name} onChange={e => setName(e.target.value)}></textarea>
                         </label>
                         <label>
                             Username
-                            <textarea defaultValue={password.username}></textarea>
+                            <textarea value={username} onChange={e => setUsername(e.target.value)}></textarea>
                         </label>
                         <label>
                             Password
@@ -36,11 +68,11 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
                         </label>
                         <label>
                             URL
-                            <textarea defaultValue={password.url}></textarea>
+                            <textarea value={url} onChange={e => setUrl(e.target.value)}></textarea>
                         </label>
                         <label>
                             Tag
-                            <select defaultValue={password.tags} multiple={false} name="tags" >
+                            <select value={tags} onChange={e => setTags(e.target.value)} multiple={false} name="tags" >
                                 <option value={'blue'}>Blue</option>
                                 <option value={'red'}>Red</option>
                                 <option value={'green'}>Green</option>
@@ -50,7 +82,7 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
                         </label>
                         <label>
                             Comment
-                            <textarea defaultValue={password.comment}></textarea>
+                            <textarea value={comment} onChange={e => setComment(e.target.value)}></textarea>
                         </label>
                     </div>
                     </>

@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__) # DEBUGGING
 def getRoutes(request):
     routes = [
         {
-            'Endpoint': '/passwords/',
+            'Endpoint': '/',
             'method': 'GET',
             'body': None,
             'description': 'Returns an array of passwords'
@@ -109,6 +109,19 @@ def getPassword(request, pk): # pk is the primary key of the password object
     password = Password.objects.get(id=pk) # Gets a single password object from the database
     serializer = PasswordSerializer(password, many=False) # many=False because there is only one object
     return Response(serializer.data)
+
+@api_view(['PUT'])
+def updatePassword(request, pk):
+    data = request.data
+    password = Password.objects.get(id=pk)
+    serializer = PasswordSerializer(instance=password, data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        print(serializer.errors) # DEBUGGING, very useful!
+        return Response(serializer.errors, status=400)
 
 @api_view(['POST'])
 def generatePassword(request):
