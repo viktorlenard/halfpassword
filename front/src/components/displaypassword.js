@@ -1,8 +1,22 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DisplayPassword = ({ password, getPassword, setIsEditing }) => {
     
+    const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false);
+
+    let deletePassword = async () => {
+        if (window.confirm('Are you sure you want to delete this note?')) {
+            fetch(`/api/passwords/${password.id}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            navigate('/');
+        }
+    }
 
     return (
         <div>
@@ -12,7 +26,7 @@ const DisplayPassword = ({ password, getPassword, setIsEditing }) => {
                     <>
                     <div>
                         <button onClick={() => setIsEditing(true)}>Edit</button>
-                        <button>Delete</button>
+                        <button onClick={() => deletePassword()}>Delete</button>
                     </div>
                     <div className='password-card'>
                         <label>

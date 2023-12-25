@@ -100,7 +100,7 @@ def getRoutes(request):
 
 @api_view(['GET'])
 def getPasswords(request):
-    passwords = Password.objects.all() # This is a query set of all the passwords. Can't be passed directly to the response. Need to serialize it first
+    passwords = Password.objects.all().order_by('name') # This is a query set of all the passwords. Can't be passed directly to the response. Need to serialize it first
     serializer = EntrySerializer(passwords, many=True) # Serializes the query set into a json object. Many=True because there are many objects in the query set
     return Response(serializer.data) # Returns the serialized data. serilazer is a json object. serializer.data is the data inside the json object
 
@@ -122,6 +122,12 @@ def updatePassword(request, pk):
     else:
         print(serializer.errors) # DEBUGGING, very useful!
         return Response(serializer.errors, status=400)
+    
+@api_view(['DELETE'])
+def deletePassword(request, pk):
+    password = Password.objects.get(id=pk)
+    password.delete()
+    return Response('Entry deleted')
 
 @api_view(['POST'])
 def generatePassword(request):
