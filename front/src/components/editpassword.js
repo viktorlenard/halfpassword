@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Generator from './generator';
 
 const EditPassword = ({ password, getPassword, setIsEditing }) => {
     
+    const [passwordValue, setPasswordValue] = useState(password.ciphertext);
+    
+    const handleGenerate = (generatedPassword) => {
+        if (generatedPassword !== undefined) {
+            setPasswordValue(generatedPassword);
+        }
+    };
+
     return (
         <div>
             {/* Render 'NOT FOUND' if nothing comes back from the call */}
@@ -24,7 +32,7 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
                         </label>
                         <label>
                             Password
-                            <textarea defaultValue={password.ciphertext}></textarea>
+                            <textarea value={passwordValue} onChange={e => setPasswordValue(e.target.value)}></textarea>
                         </label>
                         <label>
                             URL
@@ -50,7 +58,7 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
                     <p>NOT FOUND</p>
                 )}
             </div>
-            <Generator/>
+            <Generator onDataChange={handleGenerate}/>
         </div>
     )
 };

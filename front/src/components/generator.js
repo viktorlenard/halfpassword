@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Generator = () => {
+const Generator = ( {onDataChange} ) => {
   
     const [lenght, setLenght] = useState(3);
     const [data, setData] = useState(null);
@@ -33,6 +33,7 @@ const Generator = () => {
             const data = await response.json();
             console.log(data);
             setData(data);
+            onDataChange(data);
         } else {
             console.error('Error:', response.status, response.statusText);
         }
@@ -40,35 +41,34 @@ const Generator = () => {
     
     return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-            Generator
-        </label>
-        <label>
-            Readable
-            <input defaultChecked={true} label='Readable' type="checkbox" name="human" />
-        </label>
-        <label>
-            Length
-            <input type="range" min='3'max='8' step='1' name="length" defaultValue='3' onChange={handleLenghtChange}/>
-            {lenght}
-        </label>
-        <select multiple={false} name="div" >
-            <option value={'-'}>-</option>
-            <option value={'_'}>_</option>
-            <option value={'.'}>.</option>
-        </select>
-        <label>
-            Caps
-            <input type="checkbox" name="caps" />
-        </label>
-        <label>
-            Nums
-            <input defaultChecked={true} type="checkbox" name="nums" />
-        </label>
-        <input type="submit" value="Submit" />
-    </form>
-    <p>{data}</p>
+        <form onSubmit={handleSubmit}>
+            <label>
+                Generator
+            </label>
+            <label>
+                Readable
+                <input defaultChecked={true} label='Readable' type="checkbox" name="human" />
+            </label>
+            <label>
+                Length
+                <input type="range" min='3'max='8' step='1' name="length" defaultValue='3' onChange={handleLenghtChange}/>
+                {lenght}
+            </label>
+            <select multiple={false} name="div" >
+                <option value={'-'}>-</option>
+                <option value={'_'}>_</option>
+                <option value={'.'}>.</option>
+            </select>
+            <label>
+                Caps
+                <input type="checkbox" name="caps" />
+            </label>
+            <label>
+                Nums
+                <input defaultChecked={true} type="checkbox" name="nums" />
+            </label>
+            <input type="submit" value="Submit" />
+        </form>
     </div>
   )
 }
