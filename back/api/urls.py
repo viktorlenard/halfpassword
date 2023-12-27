@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.getRoutes, name="routes"),
     path('passwords/', views.getPasswords, name="passwords"),
+    path('passwords/create/', views.createPassword, name="create-passwords"),
     path('generate/', views.generatePassword, name="generate-password"),
     path('passwords/<str:pk>/update/', views.updatePassword, name="update-password"),
     path('passwords/<str:pk>/delete/', views.deletePassword, name="delete-password"),

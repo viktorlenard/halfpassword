@@ -73,4 +73,4 @@ const Generator = ( {onDataChange} ) => {
   )
 }
 
-export default Generator
+export default Generator;

@@ -1,8 +1,9 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import './App.css';
 import Header from './components/header'; 
 import PasswordsPage from './pages/PasswordsPage';
 import PasswordPage from './pages/PasswordPage';
+import CreatePassword from './components/createpassword';
 
 function App() {
   return (
@@ -10,6 +11,9 @@ function App() {
       <div className="App">
         <Header /> 
         {/* When visiting http://localhost:3000/, the page below will render. */}
+        <Routes>
+          <Route path='/create/' element={<CreatePassword />} />
+        </Routes>
         <Routes> 
           <Route path='/' element={<PasswordsPage />} />
         </Routes>       

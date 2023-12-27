@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import ListItem from '../components/listitem';
-
+import CreateButton from '../components/createbutton';
 
 const PasswordsPage = () => {
   
@@ -18,6 +18,9 @@ const PasswordsPage = () => {
 
     return (
       <div>
+        <div>
+          <CreateButton />
+        </div>
         <div className='entries-list'>
           {entries.map((entries, index) => (
             <ListItem key={index} entries={entries} />

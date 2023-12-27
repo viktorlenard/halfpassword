@@ -55,7 +55,6 @@ def getRoutes(request):
             'body': None,
             'description': 'Deletes and exiting password'
         },
-        # This might change , not sure how to implement it yet
         {
             'Endpoint': '/generate/',
             'method': 'POST',
@@ -128,6 +127,17 @@ def deletePassword(request, pk):
     password = Password.objects.get(id=pk)
     password.delete()
     return Response('Entry deleted')
+
+@api_view(['POST'])
+def createPassword(request):
+    data = request.data
+    serializer = PasswordSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        print(serializer.errors) # DEBUGGING, very useful!
+        return Response(serializer.errors, status=400)
 
 @api_view(['POST'])
 def generatePassword(request):
