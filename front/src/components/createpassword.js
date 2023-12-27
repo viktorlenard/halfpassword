@@ -34,10 +34,12 @@ const CreatePassword = () => {
                 user: 1,
                 name: name,
                 username: username,
-                ciphertext: passwordValue,
                 url: url,
                 tags: tags,
-                comment: comment
+                comment: comment,
+                history: [{
+                    password: passwordValue,
+                }]
             })
         });
     
@@ -78,7 +80,7 @@ const CreatePassword = () => {
                 <label>
                     Tag
                     <select value={tags} onChange={e => setTags(e.target.value)} multiple={false} name="tags" >
-                        <option value=''>Select a tag</option>
+                        <option value=''>No tag</option>
                         <option value={'blue'}>Blue</option>
                         <option value={'red'}>Red</option>
                         <option value={'green'}>Green</option>

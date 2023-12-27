@@ -41,10 +41,10 @@ const DisplayPassword = ({ password, getPassword, setIsEditing }) => {
                         </label>
                         <label>
                             Password
-                            <button className='switchy-button' onClick={() => navigator.clipboard.writeText(password.ciphertext)}
+                            <button className='switchy-button' onClick={() => navigator.clipboard.writeText(password.history[password.history.length - 1].password)}
                             onMouseEnter={() => setIsHovered(true)}
                             onMouseLeave={() => setIsHovered(false)} >
-                            {isHovered ? password.ciphertext : '********'}
+                            {isHovered ? password.history[password.history.length - 1].password : '********'}
                             </button>
                         </label>
                         <label>

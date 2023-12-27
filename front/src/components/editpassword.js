@@ -5,7 +5,7 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
     
     const [name, setName] = useState(password.name);
     const [username, setUsername] = useState(password.username);
-    const [passwordValue, setPasswordValue] = useState(password.ciphertext);
+    const [passwordValue, setPasswordValue] = useState(password.history[password.history.length - 1].password);
     const [url, setUrl] = useState(password.url);
     const [tags, setTags] = useState(password.tags);
     const [comment, setComment] = useState(password.comment);
@@ -27,10 +27,13 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
                     user: password.user,
                     name: name,
                     username: username,
-                    ciphertext: passwordValue,
                     url: url,
                     tags: tags,
-                    comment: comment
+                    comment: comment,
+                    history: [{
+                        password: passwordValue,
+                        entry: password.id
+                    }]
                 })
             });
     
@@ -73,7 +76,7 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
                         <label>
                             Tag
                             <select value={tags} onChange={e => setTags(e.target.value)} multiple={false} name="tags" >
-                                <option value=''>Select a tag</option>
+                                <option value=''>No tag</option>
                                 <option value={'blue'}>Blue</option>
                                 <option value={'red'}>Red</option>
                                 <option value={'green'}>Green</option>

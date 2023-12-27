@@ -2,8 +2,9 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Password
-from .serializers import PasswordSerializer, EntrySerializer
-from .utils import request_validator, password_generator 
+from .serializers import PasswordSerializer, PasswordSerializer_Safe, PasswordHistorySerializer # DB 2.0
+# from .serializers import PasswordSerializer, EntrySerializer # DB 1.0
+from .utils import request_validator, password_generator
 
 import logging # DEBUGGING
 logger = logging.getLogger(__name__) # DEBUGGING
@@ -100,27 +101,41 @@ def getRoutes(request):
 @api_view(['GET'])
 def getPasswords(request):
     passwords = Password.objects.all().order_by('name') # This is a query set of all the passwords. Can't be passed directly to the response. Need to serialize it first
-    serializer = EntrySerializer(passwords, many=True) # Serializes the query set into a json object. Many=True because there are many objects in the query set
+    serializer = PasswordSerializer_Safe(passwords, many=True) # Serializes the query set into a json object. Many=True because there are many objects in the query set
     return Response(serializer.data) # Returns the serialized data. serilazer is a json object. serializer.data is the data inside the json object
 
 @api_view(['GET'])
 def getPassword(request, pk): # pk is the primary key of the password object
     password = Password.objects.get(id=pk) # Gets a single password object from the database
-    serializer = PasswordSerializer(password, many=False) # many=False because there is only one object
-    return Response(serializer.data)
+    serializer = PasswordSerializer(password) # Use the new serializer
+    return Response(serializer.data) # Returns the serialized data
 
 @api_view(['PUT'])
 def updatePassword(request, pk):
     data = request.data
     password = Password.objects.get(id=pk)
-    serializer = PasswordSerializer(instance=password, data=data)
-
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
+    password_serializer = PasswordSerializer(instance=password, data=data)
+    if password_serializer.is_valid():
+        password_serializer.save()
+        latest_password = password.password_history.order_by('-created').first() # Get the latest password in the history
+        if latest_password is None or data['history'][0]['password'] != latest_password.password: # Only save the new password if it's different from the latest password
+            history_data = {
+                'password': data['history'][0]['password'],
+                'entry': password.id
+            } # Create a new PasswordHistory instance
+            history_serializer = PasswordHistorySerializer(data=history_data)
+            if history_serializer.is_valid():
+                history_serializer.save()
+                return Response({
+                    'password': password_serializer.data,
+                    'history': history_serializer.data
+                })
+            else:
+                return Response(history_serializer.errors, status=400)
+        else:
+            return Response(password_serializer.data)
     else:
-        print(serializer.errors) # DEBUGGING, very useful!
-        return Response(serializer.errors, status=400)
+        return Response(password_serializer.errors, status=400)
     
 @api_view(['DELETE'])
 def deletePassword(request, pk):
@@ -131,6 +146,29 @@ def deletePassword(request, pk):
 @api_view(['POST'])
 def createPassword(request):
     data = request.data
+    password_serializer = PasswordSerializer(data=data)
+    if password_serializer.is_valid():
+        password = password_serializer.save()
+        history_data = {
+            'password': data['history'][0]['password'],
+            'entry': password.id # This is the id of the password object that was just created
+        } # Create a new PasswordHistory instance
+        history_serializer = PasswordHistorySerializer(data=history_data)
+        if history_serializer.is_valid():
+            history_serializer.save()
+            return Response({
+                'password': password_serializer.data,
+                'history': history_serializer.data
+            })
+        else:
+            return Response(history_serializer.errors, status=400)
+    else:
+        return Response(password_serializer.errors, status=400)
+'''
+OLD CODE - FOR COMPARISON ONLY
+@api_view(['POST'])
+def createPassword(request):
+    data = request.data
     serializer = PasswordSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
@@ -138,6 +176,7 @@ def createPassword(request):
     else:
         print(serializer.errors) # DEBUGGING, very useful!
         return Response(serializer.errors, status=400)
+'''
 
 @api_view(['POST'])
 def generatePassword(request):
