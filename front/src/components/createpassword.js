@@ -10,7 +10,7 @@ const CreatePassword = () => {
     const [username, setUsername] = useState();
     const [passwordValue, setPasswordValue] = useState();
     const [url, setUrl] = useState();
-    const [tags, setTags] = useState();
+    const [tags, setTags] = useState('');
     const [comment, setComment] = useState();
 
     const handleGenerate = (generatedPassword) => {
@@ -78,6 +78,7 @@ const CreatePassword = () => {
                 <label>
                     Tag
                     <select value={tags} onChange={e => setTags(e.target.value)} multiple={false} name="tags" >
+                        <option value=''>Select a tag</option>
                         <option value={'blue'}>Blue</option>
                         <option value={'red'}>Red</option>
                         <option value={'green'}>Green</option>

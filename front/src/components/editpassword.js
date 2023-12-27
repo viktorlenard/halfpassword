@@ -73,6 +73,7 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
                         <label>
                             Tag
                             <select value={tags} onChange={e => setTags(e.target.value)} multiple={false} name="tags" >
+                                <option value=''>Select a tag</option>
                                 <option value={'blue'}>Blue</option>
                                 <option value={'red'}>Red</option>
                                 <option value={'green'}>Green</option>
