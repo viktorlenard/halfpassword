@@ -19,7 +19,7 @@ const History = ({ password }) => {
                     return (
                         <div key={index}>
                             <p>{formattedDate}</p>
-                            <button className='history-button' onClick={() => navigator.clipboard.writeText(item.password)}>{item.password}</button>
+                            <button className='switchy-button' onClick={() => navigator.clipboard.writeText(item.password)}>{item.password}</button>
                         </div>
                     );
                 })}

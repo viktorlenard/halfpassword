@@ -1,11 +1,25 @@
 @import './fonts.css';
 
+body {
+  background-color: rgb(42, 38, 38);
+  color: rgb(214, 207, 207);
+  text-align: center;
+}
+
 h1 {
     font-family: 'PPMondwest-Bold';
     font-weight: bold;
     font-style: normal;
-    color: #000000;
+    color: white;
     margin: 0;
+}
+
+h3 {
+  font-family: 'PPMondwest-Bold';
+  font-weight: bold;
+  font-style: normal;
+  color: rgb(214, 207, 207);
+  margin: 0;
 }
 
 .home-link {
@@ -13,13 +27,14 @@ h1 {
     font-weight: bold;
     font-style: normal;  
     text-decoration: none;
-    color: black;
+    color: white;
   }
   
 .home-link:hover {
-    color: rgb(107, 107, 107);
+    color: rgb(106, 106, 106);
 }
 
 .switchy-button {
-  min-width: 200px;
+  min-width: 350px;
+  min-height: 50px;
 }
