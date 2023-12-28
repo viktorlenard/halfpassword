@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import History from './history';
 
-const DisplayPassword = ({ password, getPassword, setIsEditing }) => {
+const DisplayPassword = ({ password, setIsEditing }) => {
     
     const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false);
+    const [showHistory, setShowHistory] = useState(false);
 
     let deletePassword = async () => {
         if (window.confirm('Are you sure you want to delete this note?')) {
@@ -47,6 +49,12 @@ const DisplayPassword = ({ password, getPassword, setIsEditing }) => {
                             {isHovered ? password.history[password.history.length - 1].password : '********'}
                             </button>
                         </label>
+                        <div>
+                        <button onClick={() => setShowHistory(!showHistory)} disabled={password.history && password.history.length <= 1}>
+                                {showHistory ? 'Hide History' : 'Show History'}
+                            </button>
+                            {showHistory ? <History password={password} handleClose={() => setShowHistory(false)} /> : null}    
+                        </div>
                         <label>
                             URL
                             <a href={`http://${password.url}`} target="_blank" rel="noopener noreferrer">

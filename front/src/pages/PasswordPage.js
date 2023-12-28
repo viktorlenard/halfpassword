@@ -5,13 +5,12 @@ import { useParams } from 'react-router-dom';
 
 const PasswordPage = () => {
     
-    let { id } = useParams();
-    let [password, setPassword] = useState(null);
-    let [isEditing, setIsEditing] = useState(false);
-    let getPassword = async () => {
+    const { id } = useParams();
+    const [password, setPassword] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const getPassword = async () => {
         let response = await fetch(`/api/passwords/${id}`);
         let data = await response.json();
-        console.log(data);
         setPassword(data);
     }
 

@@ -67,7 +67,7 @@ const Generator = ( {onDataChange} ) => {
                 Nums
                 <input defaultChecked={true} type="checkbox" name="nums" />
             </label>
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Generate" />
         </form>
     </div>
   )
