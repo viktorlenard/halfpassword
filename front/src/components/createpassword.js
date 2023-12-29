@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Generator from './generator';
 import AuthContext from '../context/AuthContext';
 
-const CreatePassword = () => {
-
+const CreatePassword = React.memo(() => {
+    console.log('CreatePassword rendered');
     const { user } = useContext(AuthContext);
     console.log(user);
     const navigate = useNavigate();
@@ -99,6 +99,6 @@ const CreatePassword = () => {
             <Generator onDataChange={handleGenerate}/>
         </div>
     )
-};
+});
 
 export default CreatePassword;

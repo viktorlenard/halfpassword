@@ -3,16 +3,17 @@ import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 
 const PrivateRoute = ({ children, ...rest }) => {
-  const navigate = useNavigate();
+    console.log('PrivateRoute rendered');
+    const navigate = useNavigate();
 
-  let { user } = useContext(AuthContext);
+    let { user } = useContext(AuthContext);
 
-  if (!user) {
-    navigate('/login');
-    return null;
-  }
+    if (!user) {
+      navigate('/login');
+      return null;
+    }
 
-  return children;
+    return children;
 };
 
 export default PrivateRoute;
