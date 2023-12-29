@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Generator from './generator';
+import AuthContext from '../context/AuthContext';
 
 const CreatePassword = () => {
-    
+
+    const { user } = useContext(AuthContext);
+    console.log(user);
     const navigate = useNavigate();
 
     const [name, setName] = useState();
@@ -31,7 +34,7 @@ const CreatePassword = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                user: 1,
+                user: user.user_id,
                 name: name,
                 username: username,
                 url: url,

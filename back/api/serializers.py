@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from .models import Password, PasswordHistory
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 # DB 2.0
 class PasswordSerializer(ModelSerializer):
@@ -22,6 +23,21 @@ class PasswordHistorySerializer(ModelSerializer):
         class Meta:
             model = PasswordHistory
             fields = '__all__'
+
+'''
+Custom serializer for JWT token customization. Wanted to include the usernae in the token payload.
+'''
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        # ...
+
+        return token
+
 
 '''
 # DB 1.0

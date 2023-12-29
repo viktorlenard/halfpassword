@@ -1,26 +1,31 @@
-import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Header from './components/header'; 
+
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import PasswordsPage from './pages/PasswordsPage';
 import PasswordPage from './pages/PasswordPage';
+
+import Header from './components/header'; 
 import CreatePassword from './components/createpassword';
+import PrivateRoute from './utils/PrivateRoute';
+
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Header /> 
-        {/* When visiting http://localhost:3000/, the page below will render. */}
-        <Routes>
-          <Route path='/create/' element={<CreatePassword />} />
-        </Routes>
-        <Routes> 
-          <Route path='/' element={<PasswordsPage />} />
-        </Routes>       
-        {/* When visiting http://localhost:3000/password/:id, the page with the corresponding id int will render */}
-        <Routes>
-          <Route path='/passwords/:id' element={<PasswordPage />} />
-        </Routes>
+        <AuthProvider>
+          <Header /> 
+          <Routes>
+            <Route path='/register/' element={<RegisterPage />} />
+            <Route path='/login/' element={<LoginPage />} />
+            <Route path='/create/' element={<PrivateRoute><CreatePassword /></PrivateRoute>} />
+            <Route path='/' element={<PrivateRoute><PasswordsPage /></PrivateRoute>} />
+            <Route path='/passwords/:id' element={<PrivateRoute><PasswordPage /></PrivateRoute>} />
+          </Routes>
+        </AuthProvider>
       </div>
     </Router>
   ); 

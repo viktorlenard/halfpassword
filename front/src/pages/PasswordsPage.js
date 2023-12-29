@@ -1,18 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import ListItem from '../components/listitem';
 import CreateButton from '../components/createbutton';
+import AuthContext from '../context/AuthContext';
 
 const PasswordsPage = () => {
   
+    let {authTokens} = useContext(AuthContext);
+
     let [entries, setEntries] = useState([]);
     useEffect (() => {
       getEntries();
     }, []);
   
     let getEntries = async () => {
-      let response = await fetch('/api/passwords/');
+      let response = await fetch('/api/passwords/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + String(authTokens.access)
+        }
+      });
       let data = await response.json();
-      console.log(data);
       setEntries(data);
     }
 

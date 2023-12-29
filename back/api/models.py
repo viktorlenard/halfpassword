@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django_cryptography.fields import encrypt
+from django.contrib.auth.models import User
 
 
 # DB 2.0

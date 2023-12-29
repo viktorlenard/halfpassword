@@ -26,14 +26,9 @@ const DisplayPassword = ({ password, setIsEditing }) => {
             <div className='entry-card'>
                 {password ? (
                     <>
-                    <div>
-                        <button onClick={() => setIsEditing(true)}>Edit</button>
-                        <button onClick={() => deletePassword()}>Delete</button>
-                    </div>
                     <div className='password-card'>
                         <label>
-                            <h3>Name</h3>
-                            <p>{password.name}</p>
+                            <h3>{password.name}</h3>
                         </label>
                         <label>
                             Username
@@ -69,6 +64,10 @@ const DisplayPassword = ({ password, setIsEditing }) => {
                             <h3>Comment</h3>
                             <p>{password.comment}</p>
                         </label>
+                    </div>
+                    <div>
+                        <button onClick={() => setIsEditing(true)}>Edit</button>
+                        <button onClick={() => deletePassword()}>Delete</button>
                     </div>
                     </>
                 ) : (

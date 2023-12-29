@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from .models import Password
-from .serializers import PasswordSerializer, PasswordSerializer_Safe, PasswordHistorySerializer # DB 2.0
-# from .serializers import PasswordSerializer, EntrySerializer # DB 1.0
+from .serializers import PasswordSerializer, PasswordSerializer_Safe, PasswordHistorySerializer, MyTokenObtainPairSerializer # DB 2.0
 from .utils import request_validator, password_generator
+# from rest_framework_simplejwt.views import TokenObtainPairView
 
 import logging # DEBUGGING
 logger = logging.getLogger(__name__) # DEBUGGING
@@ -16,7 +17,7 @@ def getRoutes(request):
             'Endpoint': '/',
             'method': 'GET',
             'body': None,
-            'description': 'Returns an array of passwords'
+            'description': 'Returns an array of password objects'
         },
         {
             'Endpoint': '/passwords/id',
@@ -48,7 +49,7 @@ def getRoutes(request):
                 'tags': "",
                 'comment': "",
             },
-            'description': 'Creates an existing password with data sent in post request'
+            'description': 'Updates an existing password with data sent in post request'
         },
         {
             'Endpoint': '/passwords/id/delete/',
@@ -69,6 +70,28 @@ def getRoutes(request):
             'description': 'Generates a new password with data sent in post request'
         },
         {
+            'Endpoint': '/token/',
+            'method': '?',
+            'body': {
+                'username': "",
+                'email': "",
+                'password': "",
+                'confirm_password': ""
+            },
+            'description': '?',
+        },
+        {
+            'Endpoint': '/token/refresh/',
+            'method': '?',
+            'body': {
+                'username': "",
+                'email': "",
+                'password': "",
+                'confirm_password': ""
+            },
+            'description': '?',
+        },
+        {
             'Endpoint': '/register/',
             'method': 'POST',
             'body': {
@@ -84,7 +107,6 @@ def getRoutes(request):
             'method': 'POST',
             'body': {
                 'username': "",
-                'email': "",
                 'password': "",
             },
             'description': 'Authenticates a user and returns an auth token',
@@ -99,8 +121,10 @@ def getRoutes(request):
     return Response(routes) 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getPasswords(request):
-    passwords = Password.objects.all().order_by('name') # This is a query set of all the passwords. Can't be passed directly to the response. Need to serialize it first
+    user = request.user # Gets the user from the request
+    passwords = Password.objects.filter(user=user).order_by('name') # This is a query set of all the passwords. Can't be passed directly to the response. Need to serialize it first
     serializer = PasswordSerializer_Safe(passwords, many=True) # Serializes the query set into a json object. Many=True because there are many objects in the query set
     return Response(serializer.data) # Returns the serialized data. serilazer is a json object. serializer.data is the data inside the json object
 
