@@ -16,7 +16,7 @@ class Password(models.Model):
     ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='user_passwords')
     name = models.CharField(max_length=64) # Required
-    username = models.CharField(max_length=1000, null=True, blank=True)
+    username = encrypt(models.CharField(max_length=1000, null=True, blank=True)) # Encrypted
     is_favorite = models.BooleanField(default=False) # NEW FIELD
     url = models.CharField(max_length=64, blank=True)
     tags = models.CharField(max_length=10, choices=tag, null=True, blank=True)
