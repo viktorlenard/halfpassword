@@ -9,7 +9,7 @@ const PrivateRoute = ({ children, ...rest }) => {
     let { user } = useContext(AuthContext);
 
     if (!user) {
-      navigate('/login');
+      navigate('/login/');
       return null;
     }
 
