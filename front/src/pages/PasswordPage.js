@@ -1,17 +1,32 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import EditPassword from '../components/editpassword';
 import DisplayPassword from '../components/displaypassword';
 import { useParams } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
+
 
 const PasswordPage = () => {
     
+    let {authTokens, logoutUser} = useContext(AuthContext);
+
     const { id } = useParams();
     const [password, setPassword] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const getPassword = async () => {
-        let response = await fetch(`/api/passwords/${id}`);
+        let response = await fetch(`/api/passwords/${id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + String(authTokens.access)
+            }
+          });
         let data = await response.json();
-        setPassword(data);
+        if (response.status === 200) {
+            setPassword(data);
+          }else if(response.statusText === 'Unauthorized')
+          {
+            logoutUser();
+          }
     }
 
     useEffect (() => {

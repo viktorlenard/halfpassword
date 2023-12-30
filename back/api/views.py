@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Password
 from .serializers import PasswordSerializer, PasswordSerializer_Safe, PasswordHistorySerializer, MyTokenObtainPairSerializer # DB 2.0
 from .utils import request_validator, password_generator
+from django.http import Http404
 # from rest_framework_simplejwt.views import TokenObtainPairView
 
 import logging # DEBUGGING
@@ -129,8 +130,13 @@ def getPasswords(request):
     return Response(serializer.data) # Returns the serialized data. serilazer is a json object. serializer.data is the data inside the json object
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getPassword(request, pk): # pk is the primary key of the password object
-    password = Password.objects.get(id=pk) # Gets a single password object from the database
+    user = request.user # Gets the user from the request
+    try:
+        password = Password.objects.get(id=pk, user=user) # Gets a single password object from the database
+    except Password.DoesNotExist:
+        raise Http404("Password does not exist")
     serializer = PasswordSerializer(password) # Use the new serializer
     return Response(serializer.data) # Returns the serialized data
 

@@ -5,7 +5,7 @@ import AuthContext from '../context/AuthContext';
 
 const PasswordsPage = () => {
   
-    let {authTokens} = useContext(AuthContext);
+    let {authTokens, logoutUser} = useContext(AuthContext);
 
     let [entries, setEntries] = useState([]);
     useEffect (() => {
@@ -21,7 +21,12 @@ const PasswordsPage = () => {
         }
       });
       let data = await response.json();
-      setEntries(data);
+      if (response.status === 200) {
+        setEntries(data);
+      }else if(response.statusText === 'Unauthorized')
+      {
+        logoutUser();
+      }
     }
 
     return (

@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
+// AuthContext.Provider is used to provide the context value to its children
+// AuthContext.Consumer is used to consume the context value in a component
+
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
@@ -44,13 +47,13 @@ export const AuthProvider = ({ children }) => {
         navigate('/login');
     }
 
-    let updateUser = async () => {
+    let updateToken = async () => {
         let response = await fetch('/api/token/refresh/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({'refresh': authTokens.refresh})
+            body: JSON.stringify({'refresh': authTokens?.refresh})
         })
         let data = await response.json();
         if (response.status === 200) {
@@ -60,6 +63,11 @@ export const AuthProvider = ({ children }) => {
         }else{
             logoutUser();
         }
+
+        if (loading) {
+            setLoading(false);
+        }
+
     }
 
     let contextData = {
@@ -70,10 +78,15 @@ export const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        
+        if (loading) {
+            updateToken()
+        }
+        
         const fourMinutes = 4 * 60 * 1000;
         let interval = setInterval(() => {
             if (authTokens) {
-                updateUser();
+                updateToken();
             }
         }, fourMinutes)
         return () => {
@@ -83,7 +96,7 @@ export const AuthProvider = ({ children }) => {
     
     return (
         <AuthContext.Provider value={contextData}>
-            {children}
+            {loading? null :children}
         </AuthContext.Provider>
     );
 };
