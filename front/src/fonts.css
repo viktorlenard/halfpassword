@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'PPMondwest-Bold';
+    src: url('./fonts/PPMondwest-Bold.woff2') format('woff2'),
+         url('./fonts/PPMondwest-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+};
+
+@font-face {
+    font-family: 'PPMondwest-Regular';
+    src: url('./fonts/PPMondwest-Regular.woff2') format('woff2'),
+         url('./fonts/PPMondwest-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+};
+
+@font-face {
+    font-family: 'PPNeueMontrealMono-Regular';
+    src: url('./fonts/PPNeueMontrealMono-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+};
+
+@font-face {
+    font-family: 'PPNeueMontrealMono-RegularItalic';
+    src: url('./fonts/PPNeueMontrealMono-RegularItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+};
+
+@font-face {
+    font-family: 'PPNeueMontrealMono-Medium';
+    src: url('./fonts/PPNeueMontrealMono-Medium.woff2') format('woff2'),
+        url('./fonts/PPNeueMontrealMono-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+};
+
+@font-face {
+    font-family: 'PPNeueMontrealMono-Bold';
+    src: url('./fonts/PPNeueMontrealMono-Bold.woff2') format('woff2'),
+        url('./fonts/PPNeueMontrealMono-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+};
