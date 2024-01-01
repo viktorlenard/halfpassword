@@ -71,7 +71,7 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
                         </label>
                         <label>
                             URL
-                            <textarea value={comment || ''} onChange={e => setUrl(e.target.value)}></textarea>
+                            <textarea value={url || ''} onChange={e => setUrl(e.target.value)}></textarea>
                         </label>
                         <label>
                             Tag

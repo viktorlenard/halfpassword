@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import AuthContext from '../context/AuthContext';
 
 const PrivateRoute = ({ children, ...rest }) => {
@@ -8,9 +8,14 @@ const PrivateRoute = ({ children, ...rest }) => {
 
     let { user } = useContext(AuthContext);
 
+    useEffect(() => {
+        if (!user) {
+            navigate('/login/');
+        }
+    }, [user, navigate]); // dependencies of the effect
+
     if (!user) {
-      navigate('/login/');
-      return null;
+        return null;
     }
 
     return children;
