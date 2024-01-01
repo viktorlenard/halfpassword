@@ -2,6 +2,10 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from .models import Password, PasswordHistory
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+
+User = get_user_model()
 
 # DB 2.0
 class PasswordSerializer(ModelSerializer):
@@ -23,6 +27,21 @@ class PasswordHistorySerializer(ModelSerializer):
         class Meta:
             model = PasswordHistory
             fields = '__all__'
+
+class UserSerializer(ModelSerializer):
+    
+    password = serializers.CharField(write_only=True)
+    def create(self, validated_data):
+
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+        )
+
+        return user
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password']    
 
 '''
 Custom serializer for JWT token customization. Wanted to include the usernae in the token payload.

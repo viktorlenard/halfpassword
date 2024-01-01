@@ -4,9 +4,9 @@ import Generator from './generator';
 import AuthContext from '../context/AuthContext';
 
 const CreatePassword = React.memo(() => {
-    console.log('CreatePassword rendered');
+
+    let {authTokens} = useContext(AuthContext);
     const { user } = useContext(AuthContext);
-    console.log(user);
     const navigate = useNavigate();
 
     const [name, setName] = useState();
@@ -31,7 +31,8 @@ const CreatePassword = React.memo(() => {
         const response = await fetch(`/api/passwords/create/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + String(authTokens.access)
             },
             body: JSON.stringify({
                 user: user.user_id,

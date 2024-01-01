@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Generator from './generator';
+import { useParams } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
 
 const EditPassword = ({ password, getPassword, setIsEditing }) => {
+    
+    let {authTokens} = useContext(AuthContext);
     
     const [name, setName] = useState(password.name);
     const [username, setUsername] = useState(password.username);
@@ -21,7 +25,8 @@ const EditPassword = ({ password, getPassword, setIsEditing }) => {
             const response = await fetch(`/api/passwords/${password.id}/update/`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + String(authTokens.access)
                 },
                 body: JSON.stringify({
                     user: password.user,

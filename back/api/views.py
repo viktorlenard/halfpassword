@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import Password
-from .serializers import PasswordSerializer, PasswordSerializer_Safe, PasswordHistorySerializer, MyTokenObtainPairSerializer # DB 2.0
+from .serializers import PasswordSerializer, PasswordSerializer_Safe, PasswordHistorySerializer, MyTokenObtainPairSerializer, UserSerializer # DB 2.0
 from .utils import request_validator, password_generator
 from django.http import Http404
 from django.db.models.functions import Collate # For case insensitive sorting
@@ -139,9 +139,11 @@ def getPassword(request, pk): # pk is the primary key of the password object
     return Response(serializer.data) # Returns the serialized data
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def updatePassword(request, pk):
+    user = request.user
     data = request.data
-    password = Password.objects.get(id=pk)
+    password = Password.objects.get(id=pk, user=user)
     password_serializer = PasswordSerializer(instance=password, data=data)
     if password_serializer.is_valid():
         password_serializer.save()
@@ -166,12 +168,14 @@ def updatePassword(request, pk):
         return Response(password_serializer.errors, status=400)
     
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deletePassword(request, pk):
     password = Password.objects.get(id=pk)
     password.delete()
     return Response('Entry deleted')
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def createPassword(request):
     data = request.data
     password_serializer = PasswordSerializer(data=data)
@@ -207,6 +211,7 @@ def createPassword(request):
 '''
 
 @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
 def generatePassword(request):
     data = request.data # Gets the data from the request
     password_request = {
@@ -222,3 +227,13 @@ def generatePassword(request):
         return Response('Invalid request') # Returns an error if the request is invalid
     password = password_generator(password_request)  # Generates the password
     return Response(password)
+
+@api_view(['POST'])
+def registerUser(request):
+    data = request.data
+    serializer = UserSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        print(serializer.errors)
