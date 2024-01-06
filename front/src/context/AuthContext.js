@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
         const username = e.target.elements['username'].value;
         const password = e.target.elements['password'].value;
         e.preventDefault();
+        
         const response = await fetch('/api/token/', {
             method: 'POST',
             headers: {
@@ -31,6 +32,7 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
         
         if(response.status === 200){
+            console.log(data.refresh);
             setAuthTokens(data);
             setUser(jwtDecode(data.access));
             localStorage.setItem('authTokens', JSON.stringify(data));
@@ -61,6 +63,7 @@ export const AuthProvider = ({ children }) => {
             setUser(jwtDecode(data.access));
             localStorage.setItem('authTokens', JSON.stringify(data))
         } else {
+            console.log('Yous a bitch!')
             logoutUser();
         }
     
