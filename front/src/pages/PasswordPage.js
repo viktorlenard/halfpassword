@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useCallback} from 'react';
 import EditPassword from '../components/editpassword';
 import DisplayPassword from '../components/displaypassword';
 import { useParams } from 'react-router-dom';
@@ -12,7 +12,7 @@ const PasswordPage = () => {
     const { id } = useParams();
     const [password, setPassword] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const getPassword = async () => {
+    const getPassword = useCallback(async () => {
         let response = await fetch(`/api/passwords/${id}`, {
             method: 'GET',
             headers: {
@@ -27,11 +27,11 @@ const PasswordPage = () => {
           {
             logoutUser();
           }
-    }
+    }, [authTokens, id, logoutUser]);
 
     useEffect (() => {
         getPassword();
-    }, [id]);
+    }, [id, getPassword]);
 
     return (
         <div>

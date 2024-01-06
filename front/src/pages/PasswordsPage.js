@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useCallback} from 'react';
 import ListItem from '../components/listitem';
 import CreateButton from '../components/createbutton';
 import AuthContext from '../context/AuthContext';
@@ -8,11 +8,8 @@ const PasswordsPage = () => {
     let {authTokens, logoutUser} = useContext(AuthContext);
 
     let [entries, setEntries] = useState([]);
-    useEffect (() => {
-      getEntries();
-    }, []);
   
-    let getEntries = async () => {
+    let getEntries = useCallback(async () => {
       let response = await fetch('/api/passwords/', {
         method: 'GET',
         headers: {
@@ -28,7 +25,11 @@ const PasswordsPage = () => {
       {
         logoutUser();
       }
-    }
+    }, [authTokens, logoutUser]);
+
+    useEffect (() => {
+      getEntries();
+    }, [getEntries]);
 
     return (
       <div>

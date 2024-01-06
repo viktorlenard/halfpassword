@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const Generator = ( {onDataChange} ) => {
   
     const [lenght, setLenght] = useState(3);
-    const [data, setData] = useState(null);
 
     const handleLenghtChange = (event) => { 
         setLenght(event.target.value);
@@ -31,8 +30,6 @@ const Generator = ( {onDataChange} ) => {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data);
-            setData(data);
             onDataChange(data);
         } else {
             console.error('Error:', response.status, response.statusText);

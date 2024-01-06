@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react';
 import Generator from './generator';
-import { useParams } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
 const EditPassword = ({ password, getPassword, setIsEditing }) => {
     
-    let {authTokens} = useContext(AuthContext);
+    const {authTokens} = useContext(AuthContext);
     
     const [name, setName] = useState(password.name);
     const [username, setUsername] = useState(password.username);

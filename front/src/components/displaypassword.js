@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import History from './history';
+import AuthContext from '../context/AuthContext';
 
 const DisplayPassword = ({ password, setIsEditing }) => {
     
+    const {authTokens} = useContext(AuthContext);
     const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false);
     const [showHistory, setShowHistory] = useState(false);
 
-    let deletePassword = async () => {
+    const deletePassword = async () => {
         if (window.confirm('Are you sure you want to delete this note?')) {
             fetch(`/api/passwords/${password.id}/delete/`, {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + String(authTokens.access)
                 }
             });
             navigate('/');

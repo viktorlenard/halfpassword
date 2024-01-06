@@ -3,8 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
 const Header = () => {
-  let {user, logoutUser} = useContext(AuthContext);
-  let location = useLocation();
+  
+  const {user, logoutUser} = useContext(AuthContext);
+  const location = useLocation();
 
   return (
     <header>
