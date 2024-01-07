@@ -100,21 +100,6 @@ def getRoutes(request):
                 'confirm_password': ""
             },
             'description': 'Registers a new user',
-        },
-        {
-            'Endpoint': '/login/',
-            'method': 'POST',
-            'body': {
-                'username': "",
-                'password': "",
-            },
-            'description': 'Authenticates a user and returns an auth token',
-        },
-        {
-            'Endpoint': '/logout/',
-            'method': 'POST',
-            'body': None,
-            'description': 'Logs out a user and deletes their auth token',
         }
     ]
     return Response(routes) 

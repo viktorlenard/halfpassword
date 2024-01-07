@@ -5,7 +5,7 @@ import AuthContext from '../context/AuthContext';
 
 const CreatePassword = React.memo(() => {
 
-    let {authTokens} = useContext(AuthContext);
+    const {authTokens} = useContext(AuthContext);
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 

@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
+export default AuthContext;
+
 // AuthContext.Provider is used to provide the context value to its children
 // AuthContext.Consumer is used to consume the context value in a component
-
-export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
    
@@ -72,13 +72,6 @@ export const AuthProvider = ({ children }) => {
         }
     }, [authTokens, loading, logoutUser]);
 
-    const contextData = {
-        user:user,
-        authTokens:authTokens,
-        loginUser:loginUser,
-        logoutUser:logoutUser
-    }
-
     useEffect(() => {
         
         if (loading) {
@@ -95,6 +88,13 @@ export const AuthProvider = ({ children }) => {
             clearInterval(interval);
         }
     }, [authTokens, loading, updateToken]);
+
+    const contextData = {
+        user:user,
+        authTokens:authTokens,
+        loginUser:loginUser,
+        logoutUser:logoutUser
+    }
     
     return (
         <AuthContext.Provider value={contextData}>
